@@ -34,3 +34,57 @@ print(area_string)
 
 area_string = f"radiuss {r:05} ir {area:.3f}"
 print(area_string)
+
+food_length = len(food)
+print(f"edienam {food} ir garums {food_length}")
+
+pirmais_burts = food[0]
+print(pirmais_burts)
+
+ped_b= food[len(food)-1]
+print(ped_b)
+
+ped_b=food[-1] # pēdējais burts, pitonā ir negatīva indeksācija
+print(ped_b)
+
+try:
+    arpus_kartas=food[10]
+except IndexError as e:
+    print(f"Indeksa errors {e}")
+
+# 3 pirnie simboli
+pirmie_tris=food[:3]
+print(pirmie_tris)
+
+# pēdējie 3
+ped_3=food[-3:]
+print(ped_3)
+
+food="kartupelis"
+vidus=food[3:6]
+print(vidus)
+
+vidus=food[3:-3]
+print(vidus)
+
+k_otrais=food[::2]
+print(k_otrais)
+
+#no 4 lidz ...
+ttt=food[3:-3:3]
+print(ttt)
+
+# teksta apgriešana
+rev_food=food[::-1]
+print(rev_food)
+
+rev_food=food[::-2]
+print(rev_food)
+
+# eksistences pārbaude
+if "a" in food:
+    print(f"vārdā {food} ir a!")
+else:
+    print(f"vārdā {food} nav a!")
+
+
