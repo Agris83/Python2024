@@ -9,14 +9,13 @@ while i<2:
     for letter in text:
         if letter==ch:
             new_text += letter
-        else:
-            if i==1:
-                if letter==find_ch:
-                    new_text += letter
-                else:
-                    new_text += "*"
+        elif i==1:
+            if letter==find_ch:
+                new_text += letter
             else:
                 new_text += "*"
+        else:
+            new_text += "*"
    
     print(new_text)
     if i==0:        
