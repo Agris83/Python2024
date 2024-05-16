@@ -5,7 +5,7 @@ skaitli=[]
 cik=int(input("Ievadiet pirmskaitļu skaitu: "))
 
 
-while len(skaitli)<cik+1:
+while len(skaitli)<cik:
     pirm_sk=True
     i=2
 
