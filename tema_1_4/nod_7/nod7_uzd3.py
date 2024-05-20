@@ -4,7 +4,7 @@ def get_city_year(p0, perc, delta, p_target):
     rez=p0
     
     while rez<=p_target and i>-1:
-        rez=int(rez+rez*perc*0.01+delta)
+        rez=rez+rez*perc*0.01+delta
         i+=1
 
         if rez<=p0:
