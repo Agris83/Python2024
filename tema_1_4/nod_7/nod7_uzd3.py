@@ -11,6 +11,7 @@ def get_city_year(p0, perc, delta, p_target):
             i=-1
              
         p0=rez
+        # print(rez) # - starprezultāta izdruka
     return i
 
 
@@ -20,5 +21,7 @@ def get_city_year(p0, perc, delta, p_target):
 # a=get_city_year(1500000, 2.5, 10000, 2000000)
 
 a=get_city_year(1000, -3, 40, 2000)
+
+# ja rezultātu noapaļo uz Int - tad populācija beidzas pie 1301, bet ja atstāj Float - 1333
 
 print(a)
