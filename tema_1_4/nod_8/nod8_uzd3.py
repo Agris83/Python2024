@@ -10,7 +10,7 @@ def clean_dict_value(d, bad_val):
 
 print(clean_dict_value({'a':5,'b':6,'c':5}, 5))
 
-# 3a
+# 3b
 def clean_dict_values(d, bad_sar):
     d_kopy=d.copy()
 
