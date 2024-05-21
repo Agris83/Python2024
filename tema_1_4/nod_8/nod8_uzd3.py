@@ -1,6 +1,9 @@
 
 # 3a
 def clean_dict_value(d, bad_val):
+    '''
+    Funkcija atgriež attīrītu vādnīcu!
+    '''    
     new_d={}
     for key, val in d.items():
         if val!=bad_val:
