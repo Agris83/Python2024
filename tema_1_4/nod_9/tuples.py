@@ -15,6 +15,6 @@ print(cita_tuple[3])
 
 # strādā viss, kas paredzēts sarakstiem un stringiem
 
-
+# lai typle atgrieztu, nav obligāti jālieto iekavas, var tikai salikt komatus
 
 
