@@ -1,9 +1,23 @@
+# !!! Gala darbs !!!
+# Izveidots elementārs konntaktu saraksts - tālruņu katalogs
+# Tiek pieņemts, ka personai var būt vairāki unikāli tālruņu numuri
+# Kontaktus var izveidot un dzēst, tālruņus var pievienot un dzēst
+# Uz ekrāna var izdrukāt visu kontaktu sarakstu vai veikt personas meklēšanu
+# Kontaktus var saglabāt datnē un no turienes ielādēt
+# Ir paredzēts arī Demo režīms (aktīvs), kurš pievieno dažus kontaktus!
 
+# Agris Ginters
+# 06.06.2024
+
+import json
+import os
+
+demo_mode=True # Demo režīma aktivizācija
+json_datne='gala_darbs\\kontakti.json' # Definē kontaktu datnes atrašanās vietu
 
 class Persona:
-    tests="11"
     def __init__(self, vards="", talrunis=[]):
-        self.vards=vards
+        self.vards=vards.title()
         self.talrunis=list(set(talrunis)) # tiek pievienoti tikai unikāli tālruņi
     
     def __str__(self):
@@ -36,15 +50,15 @@ class Persona:
         return self
 
     def personas_vards(self):
-        return self.vards
+        return self.vards    
     
 
-class kat_sar:
+class katalogs:
     def __init__(self):
-        self.Kontakts = [Persona]
+        self.Kontakts = []
 
     def plus(self, vards, talrunis=[]):
-        i=self.mekle_pers(vards=vards)
+        i=self.__mekle_pers(vards=vards)
         if i == -1:
             self.Kontakts.append(Persona(vards=vards, talrunis=talrunis))
         else:
@@ -55,10 +69,13 @@ class kat_sar:
         for kont in self.Kontakts:
             if type(kont)!=type:
                 print(kont)
+        
+        if len(self.Kontakts) == 0:
+            print("Tālruņu saraksts ir tukšs!")
         return self
     
-    def mekle_pers(self, vards=""):
-        i=1
+    def __mekle_pers(self, vards=""):
+        i=0
         while i<len(self.Kontakts):
             if self.Kontakts[i].personas_vards().lower()==vards.lower():
                 return i
@@ -66,52 +83,102 @@ class kat_sar:
         return -1
     
     def dzest_talr(self, vards="", talrunis=""):
-        i=self.mekle_pers(vards=vards)
+        i=self.__mekle_pers(vards=vards)
         if i>0:
-            self.Kontakts[i].dzest_talr(talrunis=talrunis)
+            self.Kontakts[i].dzest_talr(talrunis=talrunis)            
         return self
     
     def dzest_kontaktu(self, vards=""):
-        i=self.mekle_pers(vards=vards)
+        i=self.__mekle_pers(vards=vards)
         if i>0:
             kont=self.Kontakts[i]
             self.Kontakts.remove(kont)
         return self
+
+    def mekle_kontaktu(self, vards=""):
+        i=self.__mekle_pers(vards=vards)
+        if i>0:
+            print(self.Kontakts[i])
+        else:
+            print(f"Kontakts {vards} netika atrasts!")
+        return self
+    
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, ensure_ascii=False)
     
 
-tt=kat_sar()
-tt.plus("Vilis")
-tt.plus("Anita", ['123'])
-tt.plus("Kārlis", ['456', '789'])
-tt.plus("Kārlis", ['0000'])
-tt.plus("Anita", ['123'])
+def ierakstit_datus(datne, saraksts):
+    with open(datne, 'w', encoding='utf-8') as file:
+        file.writelines(saraksts.toJSON())
 
-tt.izdruka()
-
-tt.dzest_talr("Kārlis", '0000')
-tt.dzest_talr("Kārlis", '0000')
-
-tt.izdruka()
-
-tt.dzest_kontaktu("Vilis")
-
-tt.izdruka()
-
-# katalogs = [Persona]
+    print(f"Kontaktu saraksts ir saglabāts [{json_datne}]!")
 
 
-# katalogs.append(Persona(vards='Līga'))
-# katalogs.append(Persona(vards='Pēteris', talrunis=['1111']))
-# katalogs.append(Persona(vards='Juris', talrunis=['2364', '12345']))
+def nolasit_datus(datne):
+    dati=katalogs()
+    
+    if os.path.isfile(json_datne) == True:
+        with open(json_datne, 'r', encoding='utf-8') as file:
+            json_kontakti = json.load(file)
+        
+        for kont in json_kontakti["Kontakts"]:
+            dati.plus(kont["vards"], kont["talrunis"])
 
-# print(katalogs[0])
-# print(katalogs[1])
-# print(katalogs[2])
-# print(katalogs[1].personas_vards())
+        print(f"Kontaktu saraksts ir ielādēts no [{json_datne}]!")
+    else:
+        print(f"Nav atrasta datne [{json_datne}]!")
+    return dati
 
-# kat=Persona(vards="Dita", talrunis=['789'])
 
-# katalogs[2].Kontakts()
+def Demo():
+    demo=katalogs()
+    demo.plus("Vilis")
+    demo.plus("Anita", ['123'])
+    demo.plus("Kārlis", ['456', '789'])
+    demo.plus("Kārlis", ['0000'])
+    demo.plus("Anita", ['123'])
+    return demo
 
+
+kat=katalogs()
+
+if demo_mode == True:
+    kat=Demo()
+
+izv=""
+while izv.lower() !="q":
+    print("----------------------------------------------------------------------------------------------------")
+    print("Tālruņu katalogs - izvēlieties darbību: ")
+    izv=input("1 - Visi kontakti; 2 - Meklēt; 3 - Pievienot; 4 - Dzēst; 5 - Saglabāt; 6 - Ielādēt; q - Iziet :")
+    print("----------------------------------------------------------------------------------------------------")
+
+    if izv == "1":
+        kat.izdruka()
+    elif izv == "2":
+        vards = input("Ievadiet kontakta vārdu: ")
+        kat.mekle_kontaktu(vards)
+    elif izv == "3":
+        talr=[]
+        vards = input("Ievadiet kontakta vārdu: ")
+        talr.append(input(f"Ievadiet kontakta {vards} tālruni: "))
+        kat.plus(vards=vards, talrunis=list(talr))
+    elif izv == "4":
+        izv=input("1 - Dzēst tālruni; 2 - Dzēst kontaktu :")
+        if izv == "1" or izv == "2":
+            vards = input("Ievadiet kontakta vārdu: ")
+            if izv == "1":
+                talr = input(f"Ievadiet kontakta {vards} tālruni: ")
+            if izv == "2":
+                izv = input(f"Vai tiešām dzēst {vards} visus kontaktus? (Y - Jā): ")
+                if izv.lower() == "y":
+                    kat.dzest_kontaktu(vards=vards)
+            else:
+                kat.dzest_talr(vards=vards, talrunis=talr)
+        izv="0"
+    elif izv == "5":
+        ierakstit_datus(json_datne, kat)        
+    elif izv == "6":
+        kat=nolasit_datus(json_datne)
+        
 
 
